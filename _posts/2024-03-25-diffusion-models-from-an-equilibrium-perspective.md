@@ -198,7 +198,7 @@ $$\lambda(t) = \sigma_{t}^2, \tag{14}$$
 which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot \vert x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
 
 $$
-\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t, \ z \sim \mathcal{N}(0,I)} \Big(\int \|z + \sigma_{t} s_{\theta}(x,t) \|^{2}dx \Big),
+\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t, \ z \sim \mathcal{N}(0,I)} \Big(\int \|z + \sigma_{t} s_{\theta}(\mu_{t, x_{0}} + \sigma_{t} z, t) \|^{2}dx \Big),
 $$
 
 which is the loss used during the training of diffusion models.
