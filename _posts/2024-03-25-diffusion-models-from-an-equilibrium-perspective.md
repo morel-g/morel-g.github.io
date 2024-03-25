@@ -10,11 +10,11 @@ lang: en
 Score based [[1](#ref1),[2](#ref2)] and diffusion models [[3](#ref3),[4](#ref)] are a class of generative models that have recently gained popularity in the field of artificial intelligence for their ability to generate high-quality, detailed images, audio, and other types of data.  Score-based and diffusion models, despite adopting distinct perspectives, essentially represent two facets of the same underlying methodology. These models operate by transforming a random distribution of noise into a structured pattern or image through a process that gradually remove the noise of an image. 
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/cat_3.0.png" style="width: 20%;" />
-    <img src="../assets/images/diffusion/cat_1.0.png" style="width: 20%;" />
-    <img src="../assets/images/diffusion/cat_0.2.png" style="width: 20%;" />
-    <img src="../assets/images/diffusion/cat_0.1.png" style="width: 20%;" />
-    <img src="../assets/images/diffusion/cat_0.png" style="width: 20%;" />
+    <img src="/assets/images/diffusion/cat_3.0.png" style="width: 20%;" />
+    <img src="/assets/images/diffusion/cat_1.0.png" style="width: 20%;" />
+    <img src="/assets/images/diffusion/cat_0.2.png" style="width: 20%;" />
+    <img src="/assets/images/diffusion/cat_0.1.png" style="width: 20%;" />
+    <img src="/assets/images/diffusion/cat_0.png" style="width: 20%;" />
     
 </div>
 
@@ -28,7 +28,7 @@ Indeed, even if the intuition behind diffusion models came initially from Thermo
 In machine learning, data is frequently represented through an unknown probability distribution. The essence of generative modeling lies in its capability to produce new samples from this distribution.  A common approach is to learn a transformation $F$ which changes the initial distribution $p_{0}$ into a simple known distribution often chosen to be Gaussian. Once the model has been adequately trained the learned neural network is utilized to map samples from the Gaussian distribution back to the original data distribution.
 
 
-![Continuous generation process](../assets/images/diffusion/gen_basic.png)
+![Continuous generation process](/assets/images/diffusion/gen_basic.png)
 **Figure 1:** *Transformation of a Gaussian distribution into an unknown distribution via a function $F^{-1}$. For machine learning applications $F^{-1}$ is typically learned through a neural network.*
 
 For diffusion models, the score-based approach [[1](#ref1), [2](#ref2), [3](#ref3)] makes a direct link between the function $F$ and the Fokker-Planck equation.
@@ -38,8 +38,8 @@ For diffusion models, the score-based approach [[1](#ref1), [2](#ref2), [3](#ref
 In physics, the Fokker-Planck equation provides insight into the movements of tiny particles as they are influenced by unpredictable collisions among themselves. In this context, the equation captures two fundamental processes: drift, which represents the systematic motion of particles under deterministic forces, and diffusion, which accounts for the collisions.
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/moons_forward.gif" style="width: 50%;" />
-    <img src="../assets/images/diffusion/swissroll_forward.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/moons_forward.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/swissroll_forward.gif" style="width: 50%;" />
 </div>
 
 **Figure 2:** *Application of the Fokker-Planck equation (3)<!--ref-->  to two given densities. The distribution converges toward a Normal distribution exponentially fast.*
@@ -77,8 +77,8 @@ see Figure 2. The idea behind generative models is to use the Fokker-Planck equa
 While the particles perspective is valuable for numerical purposes, many works which study diffusion models adopts it quickly, sometimes neglecting the original Fokker-Planck equation. As we will see studying directly the Fokker-Planck equation allows to understand easily certain properties of diffusion models. The derivation of the reverse process is for example very natural in this case.
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/moons_euler.gif" style="width: 50%;" />
-    <img src="../assets/images/diffusion/swissroll_euler.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/moons_euler.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/swissroll_euler.gif" style="width: 50%;" />
 </div>
 
 **Figure 3:**  *Deterministic sampling ($\lambda=0$) using equation (8)<!--ref-->.*
@@ -112,7 +112,7 @@ $$
 
 Note that when $\lambda =0$ the equation (8)<!--ref--> is a simple ordinary differential equation with no stochastic term while for $\lambda>0$ a stochastic term appear. In the literature [[1](#ref1), [2](#ref2), [6](#ref6)] the choices are often either $\lambda=0$ for the deterministic sampling or $\lambda=1/2$ based on a work from Anderson [[8](#ref8)] but it is actually possible to consider any $\lambda \geq 0$. 
 
-![Generation process with Fokker-Planck](../assets/images/diffusion/gen_fp.png)
+![Generation process with Fokker-Planck](/assets/images/diffusion/gen_fp.png)
 
 **Figure 4:** *Learning process of diffusion models. The Fokker-Planck is reversed thanks to $\nabla \log p$. In this example the deterministic form of the reversed equation is used.*
 
@@ -225,8 +225,8 @@ $$
 
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/t2.png" style="width: 50%;" />
-    <img src="../assets/images/diffusion/exp_t2.png" style="width: 50%;" />
+    <img src="/assets/images/diffusion/t2.png" style="width: 50%;" />
+    <img src="/assets/images/diffusion/exp_t2.png" style="width: 50%;" />
 </div>
 
 **Figure 5:** *Change of variable in time. On the left $t$ vs $t_{new}$. On the right $e^{-t}$ vs $e^{-t_{new}}$.*
@@ -247,19 +247,19 @@ Numerically it might be difficult to learn or sample a density function $p$ that
 
 We are now ready to give the training and sampling algorithms for diffusion models. As depicted in Figure 6, the training and sampling procedures encompassed all the concepts introduced so far.
 
-<img src="../assets/images/diffusion/algo.png">
+<img src="/assets/images/diffusion/algo.png">
 
 **Figure 6:** *Training and sampling algorithms for diffusion models.*
 
 And that's it we can now train and sample from diffusion models. Below are some examples of the sampling procedure for some 2d distributions both in the deterministic and stochastic cases.
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/moons_euler.gif" style="width: 50%;" />
-    <img src="../assets/images/diffusion/swissroll_euler.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/moons_euler.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/swissroll_euler.gif" style="width: 50%;" />
 </div>
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/moons_anderson.gif" style="width: 50%;" />
-    <img src="../assets/images/diffusion/swissroll_anderson.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/moons_anderson.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/swissroll_anderson.gif" style="width: 50%;" />
 </div>
 
 **Figure 7:** *Sampling the density. Top: deterministic sampling ($\lambda =0$), bottom: stochastic sampling ($\lambda=1/2$).*
@@ -344,8 +344,8 @@ $$
 where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the convergence of $p$ toward a uniform distribution. It then remains to learn how to reverse the process we refer to [[22](#ref22), [23](#ref23)] for details.
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/discrete_forward.gif" style="width: 50%;" />
-    <img src="../assets/images/diffusion/discrete_euler.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/discrete_forward.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/discrete_euler.gif" style="width: 50%;" />
 </div>
 
 **Figure 8:** *Discrete diffusion model applied on a discrete toy dataset. Left: convergence of the initial distribution toward the uniform equilibrium. Right: Sampling procedure.*
@@ -358,7 +358,7 @@ where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the 
 
 <a id="ref2"></a> 2. Ho, Jonathan; Jain, Ajay; Abbeel, Pieter. "Denoising Diffusion Probabilistic Models." In *Advances in Neural Information Processing Systems*, vol. 33, pp. 6840-6851, 2020. Curran Associates, Inc. [URL](https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf).
 
-<a id="ref3"></a> 3. Sohl-Dickstein, Jascha; Weiss, Eric; Maheswaranathan, Niru; Ganguli, Surya. "Deep Unsupervised Learning using Nonequilibrium Thermodynamics." In *Proceedings of the 32nd International Conference on Machine Learning*, pp. 2256-2265. Vol. 37. Proceedings of Machine Learning Research. [PDF](http://proceedings.mlr.press/v37/sohl-dickstein15.pdf) | [URL](https://proceedings.mlr.press/v37/sohl-dickstein15.html).
+<a id="ref3"></a> 3. Sohl-Dickstein, Jascha; Weiss, Eric; Maheswaranathan, Niru; Ganguli, Surya. "Deep Unsupervised Learning using Nonequilibrium Thermodynamics." In *Proceedings of the 32nd International Conference on Machine Learning*, pp. 2256-2265. Vol. 37. Proceedings of Machine Learning Research. [URL](https://proceedings.mlr.press/v37/sohl-dickstein15.html).
 
 <a id="ref4"></a> 4. Song, Yang; Sohl-Dickstein, Jascha; Kingma, Diederik P; Kumar, Abhishek; Ermon, Stefano; Poole, Ben. "Score-Based Generative Modeling through Stochastic Differential Equations." In *International Conference on Learning Representations*, 2021. [URL](https://openreview.net/forum?id=PxTIG12RRHS).
 
@@ -368,15 +368,15 @@ where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the 
 
 <a id="ref7"></a> 7. Toscani, Giuseppe. "Entropy production and the rate of convergence to equilibrium for the Fokker-Planck equation." Quarterly of Applied Mathematics 57 (1999): 521-541. [URL](https://www.ams.org/journals/qam/1999-57-03/S0033-569X-1999-1704435-X/S0033-569X-1999-1704435-X.pdf)
 
-<a id="ref8"></a> 8. Anderson, Brian D.O. "Reverse-time diffusion equation models." *Stochastic Processes and their Applications* 12.3 (1982): 313-326. ISSN: 0304-4149. [DOI](https://doi.org/10.1016/0304-4149(82)90051-5) | [URL](https://www.sciencedirect.com/science/article/pii/0304414982900515).
+<a id="ref8"></a> 8. Anderson, Brian D.O. "Reverse-time diffusion equation models." *Stochastic Processes and their Applications* 12.3 (1982): 313-326. ISSN: 0304-4149. [URL](https://www.sciencedirect.com/science/article/pii/0304414982900515).
 
 <a id="ref9"></a> 9. Vincent, Pascal. "A connection between score matching and denoising autoencoders." *Neural Computation* 23.7 (2011): 1661-1674. MIT Press. [URL](https://www.iro.umontreal.ca/~vincentp/Publications/DenoisingScoreMatching_NeuralComp2011.pdf).
 
 <a id="ref10"></a> 10. Ronneberger, Olaf, Fischer, Philipp, and Brox, Thomas. "U-Net: Convolutional Networks for Biomedical Image Segmentation." *CoRR* abs/1505.04597 (2015). [URL](http://arxiv.org/abs/1505.04597).
 
-<a id="ref11"></a> 11. Arnold, Anton and Erb, Jan. "Sharp entropy decay for hypocoercive and non-symmetric Fokker-Planck equations with linear drift." *arXiv* (2014). [DOI](https://doi.org/10.48550/ARXIV.1409.5425) | [URL](https://arxiv.org/abs/1409.5425).
+<a id="ref11"></a> 11. Arnold, Anton and Erb, Jan. "Sharp entropy decay for hypocoercive and non-symmetric Fokker-Planck equations with linear drift." *arXiv* (2014). [URL](https://arxiv.org/abs/1409.5425).
 
-<a id="ref12"></a> 12. Arnold, Anton, Einav, Amit, and Wöhrer, Tobias. "On the rates of decay to equilibrium in degenerate and defective Fokker–Planck equations." *Journal of Differential Equations* 264.11 (2018): 6843-6872. ISSN: 0022-0396. [DOI](https://doi.org/10.1016/j.jde.2018.01.052) | [URL](https://www.sciencedirect.com/science/article/pii/S0022039618300767).
+<a id="ref12"></a> 12. Arnold, Anton, Einav, Amit, and Wöhrer, Tobias. "On the rates of decay to equilibrium in degenerate and defective Fokker–Planck equations." *Journal of Differential Equations* 264.11 (2018): 6843-6872. ISSN: 0022-0396. [URL](https://www.sciencedirect.com/science/article/pii/S0022039618300767).
 
 <a id="ref13"></a> 13. Dockhorn, Tim, Vahdat, Arash, and Kreis, Karsten. "Score-Based Generative Modeling with Critically-Damped Langevin Diffusion." In *International Conference on Learning Representations* (2022). [URL](https://arxiv.org/abs/2112.07068).
 
