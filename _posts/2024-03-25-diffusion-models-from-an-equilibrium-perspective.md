@@ -295,11 +295,13 @@ p_{eq}(x, v) = \frac{1}{(2\pi)^{d}} e^{\normalsize -(\|x\|^2+\|v\|^2)/2},
 $$
 
 The convergence result can be stated as follow: for any $\epsilon>0$ there exists $c_{\epsilon}$such that
+
     $$
         \| p - p_{eq}\|^{2} \leq c_{\epsilon} e^{\normalsize{-(\frac{2}{\gamma}-\epsilon)t}}
     $$
 
 A proof can be found in [[11](#ref11)] see also [[12](#ref12)] for a more recent result without any $\epsilon$. From a physical perspective it is therefore natural to use the non-homogeneous Fokker-Planck equation for generative modeling. One particularly interesting point when considering convergence results such as the ones presented in [[11](#ref11), [12](#ref12)] is that they not only concerns the equation (16)<!--ref--> but also more general systems of the form
+
 $$
         \partial_{t} p(w, t) = \nabla \cdot \big(\mathbf{C} w p(w, t) + \mathbf{D} \nabla p(w, t)), \\
 $$
