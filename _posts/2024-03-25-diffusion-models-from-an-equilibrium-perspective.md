@@ -390,7 +390,7 @@ Or
 >  url = "https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html"
 > }
 
-The code utilized for generating the examples showcased in this post, along with numerous supplementary materials, is available [here](https://github.com/morel-g/generative-models). 
+The code utilized for generating some examples showcased in this post, along with numerous supplementary materials, is available [here](https://github.com/morel-g/generative-models). 
 
 ****
 
