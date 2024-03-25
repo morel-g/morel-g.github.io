@@ -383,9 +383,9 @@ where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the 
 
 <a id="ref4"></a> 4. Song, Yang; Sohl-Dickstein, Jascha; Kingma, Diederik P; Kumar, Abhishek; Ermon, Stefano; Poole, Ben. "Score-Based Generative Modeling through Stochastic Differential Equations." In *International Conference on Learning Representations*, 2021. [URL](https://openreview.net/forum?id=PxTIG12RRHS).
 
-<a id="ref5"></a> 5. Weng, Lilian. (Jul 2021). What are diffusion models? Lil’Log. https://lilianweng.github.io/posts/2021-07-11-diffusion-models/.
+<a id="ref5"></a> 5. Weng, Lilian. (Jul 2021). What are diffusion models? Lil’Log. *Blog post*. [URL](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/).
 
-<a id="ref6"></a> 6. Song, Yang. Generative Modeling by Estimating Gradients of the Data Distribution. https://yang-song.net/blog/2021/score/
+<a id="ref6"></a> 6. Song, Yang. Generative Modeling by Estimating Gradients of the Data Distribution. *Blog post*. [URL](https://yang-song.net/blog/2021/score/)
 
 <a id="ref7"></a> 7. Toscani, Giuseppe. "Entropy production and the rate of convergence to equilibrium for the Fokker-Planck equation." Quarterly of Applied Mathematics 57 (1999): 521-541. [URL](https://www.ams.org/journals/qam/1999-57-03/S0033-569X-1999-1704435-X/S0033-569X-1999-1704435-X.pdf)
 
