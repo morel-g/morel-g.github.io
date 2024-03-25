@@ -152,7 +152,7 @@ We recover the expression which was obtained with the original formulation and c
 
 </details>
 
-The previous proposition is central regarding the training of diffusion models because we can actually derive an analytical solution for $p(\cdot |x_0)$ and hence $\nabla \log p(\cdot |x_0)$. 
+The previous proposition is central regarding the training of diffusion models because we can actually derive an analytical solution for $p(\cdot \vert x_0)$ and hence $\nabla \log p(\cdot \vert x_0)$. 
 
 **Proposition 2:** If $p$ satisfies the Fokker-Planck equation (5)<!--ref--> then
 
@@ -186,7 +186,7 @@ $$
 where $p(\cdot \vert  x_{0})$ is the probability distribution (11)<!--ref-->, $\lambda(t)$ is a time dependent function and often for diffusion models one takes 
 $$\lambda(t) = \sigma_{t}^2, \tag{14}$$
 
-which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot|x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
+which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot \vert x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
 $$
 \mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t, \ z \sim \mathcal{N}(0,I)} \Big(\int \|z + \sigma_{t} s_{\theta}(x,t) \|^{2}dx \Big),
 $$
