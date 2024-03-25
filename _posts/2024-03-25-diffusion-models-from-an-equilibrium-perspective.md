@@ -306,7 +306,7 @@ $$
         \partial_{t} p(w, t) = \nabla \cdot \big(\mathbf{C} w p(w, t) + \mathbf{D} \nabla p(w, t)), \\
 $$
 
-where $\mathbf{C}$ and $\mathbf{D}$ are two matrices and $w$ is the (possibly augmented) unknown variable. Hence, we have only seen so far correspond two particular choices for the matrices $\mathbf{C}$ and $\mathbf{D}$ but there are actually various other diffusion processes which could be considered for generative purposes.
+where $\mathbf{C}$ and $\mathbf{D}$ are two matrices and $w$ is the (possibly augmented) unknown variable. Hence, what we have only seen so far correspond two particular choices for the matrices $\mathbf{C}$ and $\mathbf{D}$ but there are actually various other diffusion processes which could be considered for generative purposes.
 
 ### Gradient flows
 
