@@ -188,7 +188,7 @@ By combining Proposition 1 and equation (11)<!--ref-->-(12)<!--ref--> it is ther
 In practice the loss is written as 
 
 $$
-\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t} \Big(\int \frac{\lambda(t)}{\sigma_{t}^2} \|\frac{\mu_{t, x_{0}} - x}{\sigma_{t}} - \sigma_{t} s_{\theta}(x,t) \|^{2}  p(x,t \vert  x_{0})dx \Big), \tag{13}
+\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}} \Big(\int \frac{\lambda(t)}{\sigma_{t}^2} \|\frac{\mu_{t, x_{0}} - x}{\sigma_{t}} - \sigma_{t} s_{\theta}(x,t) \|^{2}  p(x,t \vert  x_{0})dt dx \Big), \tag{13}
 $$
 
 where $p(\cdot \vert  x_{0})$ is the probability distribution (11)<!--ref-->, $\lambda(t)$ is a time dependent function and often for diffusion models one takes 
@@ -198,7 +198,7 @@ $$\lambda(t) = \sigma_{t}^2, \tag{14}$$
 which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot \vert x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
 
 $$
-\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t, \ z \sim \mathcal{N}(0,I)} \Big(\int \|z + \sigma_{t} s_{\theta}(\mu_{t, x_{0}} + \sigma_{t} z, t) \|^{2}dx \Big),
+\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ z \sim \mathcal{N}(0,I)} \Big(\int \|z + \sigma_{t} s_{\theta}(\mu_{t, x_{0}} + \sigma_{t} z, t) \|^{2}dt \Big),
 $$
 
 which is the loss used during the training of diffusion models.
