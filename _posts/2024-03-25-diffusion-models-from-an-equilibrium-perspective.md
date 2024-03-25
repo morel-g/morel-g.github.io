@@ -309,9 +309,11 @@ where $\mathbf{C}$ and $\mathbf{D}$ are two matrices and $w$ is the (possibly au
 ### Gradient flows
 
 Let $\mathcal{F}$ be some functional defined on the space of probability measures and consider the following equation
+
 $$
 \partial_{t} p = \nabla \cdot (p \nabla \frac{\delta \mathcal{F}}{\delta p}),  \tag{17}
 $$
+
 here the notation $\frac{\delta \mathcal{F}}{\delta p}$ is used to represent the first variation of $\mathcal{F}$. The equality (17)<!--ref--> is a general form of equation which may admit an equilibrium for some specific choice of $\mathcal{F}$. In practice the equilibrium will be the probability distribution which nullify $\frac{\delta \mathcal{F}}{\delta p}$ (up to a normalization constant). For example convergence toward equilibrium are proven [[14](#ref14)] for $\frac{\delta \mathcal{F}}{\delta p}$ under the general form 
 
 $$
