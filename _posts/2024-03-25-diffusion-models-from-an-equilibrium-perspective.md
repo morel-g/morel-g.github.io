@@ -375,21 +375,20 @@ where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the 
 
 Cited as:
 
-```
-Morel, Guillaume. (Mar. 2024). Diffusion models from an equilibrium perspective. https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html
-```
+
+> Morel, Guillaume. (Mar. 2024). Diffusion models from an equilibrium perspective. https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html
+
 
 Or
 
-```
-@misc{Morel24,
+
+> @misc{Morel24,
   author = {Morel, Guillaume},
   title = {Diffusion models from an equilibrium perspective},
   year = {2024},
   month = {Mar},
   url = "https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html"
 }
-```
 
 The code utilized for generating the examples showcased in this post, along with numerous supplementary materials, is available [here](https://github.com/morel-g/generative-models). 
 
