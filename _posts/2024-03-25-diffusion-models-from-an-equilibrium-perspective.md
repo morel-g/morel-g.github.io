@@ -47,7 +47,7 @@ The Fokker-Planck equation under its more general form can be written
 
 $$\partial_t p(x,t) = \nabla \cdot (g(x) p(x,t))+ h(x) \Delta p (x,t),  \tag{1}$$
 
- where $x \in \mathbb{R}^d$, $g$ is the drift term and $h$ a function modeling the diffusion coefficient. For machine learning applications we usally operate in very high dimension hence computing the full distribution $p$ at once is not tractable. One of the crucial property of equation (1)<!--ref--> is the possibility to adopt a particles based view 
+ where $x \in \mathbb{R}^d$, $g$ is the drift term and $h$ a function modeling the diffusion coefficient. For machine learning applications we usually operate in very high dimension hence computing the full distribution $p$ at once is not tractable. One of the crucial property of equation (1)<!--ref--> is the possibility to adopt a particles based view 
 
 $$
 dx = -g(x) dt + \sqrt{2 h(x) dt} z, \quad z \sim \mathcal{N}(0, I).  \tag{2}
@@ -122,10 +122,13 @@ Note that when $\lambda =0$ the equation (8)<!--ref--> is a simple ordinary diff
 So, in essence, diffusion models focus on learning the score function $s_\theta(x,t) \approx \nabla \log p(x,t)$ of a Fokker-Planck equation. However for practical machine learning applications computing directly $\nabla \log p$ is intractable. The trick [[9](#ref9)] is to use the conditional log probability $\nabla \log p( \cdot \vert x_0)$ where $x_0$ are data points of the initial probability distribution $p_0$. 
 
 **Proposition 1:** The minimum of
+
 $$
 \min_\theta \int \|\nabla \log p (x, t) - s_{\theta}(x,t)\|^{2} p(x,t) dxdt, \tag{9}
 $$
+
 is the same as 
+
 $$
 \min_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t \vert  x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t \vert  x_{0})dx dt\Big) \tag{10}
 $$
@@ -134,20 +137,25 @@ $$
 <summary>Click to display the proof</summary>
 
 Expanding the square norm in (9)<!--ref--> and dropping the term which does not depend on $\theta$ one gets
+
 $$
         \min_{\theta} \int \big(-2\nabla \log f(t, \mathbf{x}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) +\|\mathbf{s}_{\theta}(t, \mathbf{x})\|^2 \big) f(t, \mathbf{x}) d \mathbf{x}.
 $$
 
 In the same way expanding the term (10)<!--ref--> in the same way and dropping the term which does not depend on $\theta$ one gets
+
 $$
         \min_{\theta} \mathbb{E}_{\mathbf{x}_{0} \sim f_0}
         \Big(\int_{0}^T \int_{\mathbb{R}^d}
         \big(-2\nabla_{x} \log f(t, \mathbf{x} \vert  \mathbf{x}_{0}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) + \| \mathbf{s}_{\theta}(t, \mathbf{x}) \|^2\big) f(t, \mathbf{x} \vert  \mathbf{x}_{0})  d \mathbf{x} d t\Big).
 $$
+
 Then we use the equalities $f\nabla \log f = \nabla f$ and $\mathbb{E}_{\mathbf{w}_{0} \sim (f_0, g_0)}(f(t, \mathbf{x} \vert  \mathbf{x}_{0})) = f(t, \mathbf{x})$ to obtain
+
 $$
         \min_{\theta} \int \big(-2\nabla \log f(t, \mathbf{x}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) +\|\mathbf{s}_{\theta}(t, \mathbf{x})\|^2 \big) f(t, \mathbf{x}) d \mathbf{x}.
 $$
+
 We recover the expression which was obtained with the original formulation and conclude that the two minimums coincide. &#x25A0;
 
 </details>
@@ -184,9 +192,11 @@ $$
 $$
 
 where $p(\cdot \vert  x_{0})$ is the probability distribution (11)<!--ref-->, $\lambda(t)$ is a time dependent function and often for diffusion models one takes 
+
 $$\lambda(t) = \sigma_{t}^2, \tag{14}$$
 
 which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot \vert x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
+
 $$
 \mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t, \ z \sim \mathcal{N}(0,I)} \Big(\int \|z + \sigma_{t} s_{\theta}(x,t) \|^{2}dx \Big),
 $$
@@ -303,13 +313,18 @@ $$
 \partial_{t} p = \nabla \cdot (p \nabla \frac{\delta \mathcal{F}}{\delta p}),  \tag{17}
 $$
 here the notation $\frac{\delta \mathcal{F}}{\delta p}$ is used to represent the first variation of $\mathcal{F}$. The equality (17)<!--ref--> is a general form of equation which may admit an equilibrium for some specific choice of $\mathcal{F}$. In practice the equilibrium will be the probability distribution which nullify $\frac{\delta \mathcal{F}}{\delta p}$ (up to a normalization constant). For example convergence toward equilibrium are proven [[14](#ref14)] for $\frac{\delta \mathcal{F}}{\delta p}$ under the general form 
+
 $$
 \frac{\delta \mathcal{F}}{\delta p}(p) = U'(p) + V + W * p,
 $$
+
 where $U$, $V$ and $W$ should satisfy some technical assumptions see [[14](#ref14)] for details.
 
 As an example let 
-$$\frac{\delta \mathcal{F}}{\delta p} = \log p + \|x\|^{2}/2, \tag{19}$$
+
+$$
+\frac{\delta \mathcal{F}}{\delta p} = \log p + \|x\|^{2}/2, \tag{19}
+$$
 
  then by injecting the above equality in (17)<!--ref--> we recover the Fokker-Planck equation
 $$\partial_t p(x,t) = \nabla \cdot (x p(x,t))+ \Delta p (x,t).$$
@@ -322,6 +337,7 @@ However the Fokker-Planck equation is a very particular example of the equation 
 $$
 \min_{p \in \mathcal{P}} \mathcal{F}(p),
 $$
+
 and follow the steepest descent direction of the function $\mathcal{F}(p)$ with respect to the gradient flow Riemannian metric induced by some special distance called the 2-Wasserstein distance. We will not go into details as this approach requires knowledge of optimal transport [[21](#ref21)]. 
 
 If the gradient flow approach is also able to reverse the Fokker-Planck equation with the particular choice (18)<!--ref-->, one might wonder why diffusion models seems more popular at the moment. One of the reason might be that, even if the gradient flow approach is much more general (it can handle non-linear equations), it does not exploit the linearity of the Fokker-Planck equation contrary to diffusion models. Numerically, this could lead to enhanced efficiency for diffusion models.
@@ -333,6 +349,7 @@ $$
 \partial_{t} p = M_{t} p,
 $$
 where $p \in \mathbb{R}^d$ is a discrete probability distribution and $M_{t} \in \mathbb{R}^{d \times d}$ is a time dependent markov transition matrix. For example if $M$ is doubly stochastic with positive entries, then it can be shown that the corresponding probability distribution $p$ converges toward a uniform distribution. For instance in [[22](#ref22)] one possible choice is given by
+
 $$
 M_{t}^{ij} =
 \begin{cases}
@@ -340,6 +357,7 @@ M_{t}^{ij} =
     &1-\sum_{l \ne i} M_{t}^{il}, \quad &\text{if } i=j,
 \end{cases}
 $$
+
 where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the convergence of $p$ toward a uniform distribution. It then remains to learn how to reverse the process we refer to [[22](#ref22), [23](#ref23)] for details.
 
 <div style="display: flex; flex-direction: row;">
