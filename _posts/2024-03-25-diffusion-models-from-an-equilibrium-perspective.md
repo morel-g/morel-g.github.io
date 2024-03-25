@@ -14,8 +14,7 @@ Score based [[1](#ref1),[2](#ref2)] and diffusion models [[3](#ref3),[4](#ref)] 
     <img src="/assets/images/diffusion/cat_1.0.png" style="width: 20%;" />
     <img src="/assets/images/diffusion/cat_0.2.png" style="width: 20%;" />
     <img src="/assets/images/diffusion/cat_0.1.png" style="width: 20%;" />
-    <img src="/assets/images/diffusion/cat_0.png" style="width: 20%;" />
-    
+    <img src="/assets/images/diffusion/cat_0.png" style="width: 20%;" /> 
 </div>
 
 There are already some great online posts about diffusion models. You can look for example at Lilian Weng post [[5](#ref5)] for a detail mathematical view from the 'diffusion' perspective. Another great blog post is by Yang Song [[6](#ref6)], one of the authors behind the score-based approach. These posts however do not focus on the complete physical derivation and perspective behind these models which will be the goal of this presentation. 
@@ -120,7 +119,7 @@ Note that when $\lambda =0$ the equation (8)<!--ref--> is a simple ordinary diff
 
 ## Learning the score function $s_{\theta}$
 
-So, in essence, diffusion models focus on learning the score function $s_\theta(x,t) \approx \nabla \log p(x,t)$ of a Fokker-Planck equation. However for practical machine learning applications computing directly $\nabla \log p$ is intractable. The trick [[9](#ref9)] is to use the conditional log probability $\nabla \log p( \cdot |x_0)$ where $x_0$ are data points of the initial probability distribution $p_0$. 
+So, in essence, diffusion models focus on learning the score function $s_\theta(x,t) \approx \nabla \log p(x,t)$ of a Fokker-Planck equation. However for practical machine learning applications computing directly $\nabla \log p$ is intractable. The trick [[9](#ref9)] is to use the conditional log probability $\nabla \log p( \cdot \vert x_0)$ where $x_0$ are data points of the initial probability distribution $p_0$. 
 
 **Proposition 1:** The minimum of
 $$
@@ -128,7 +127,7 @@ $$
 $$
 is the same as 
 $$
-\min_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t | x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t | x_{0})dx dt\Big) \tag{10}
+\min_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t \vert  x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t \vert  x_{0})dx dt\Big) \tag{10}
 $$
 
 <details>
@@ -143,9 +142,9 @@ In the same way expanding the term (10)<!--ref--> in the same way and dropping t
 $$
         \min_{\theta} \mathbb{E}_{\mathbf{x}_{0} \sim f_0}
         \Big(\int_{0}^T \int_{\mathbb{R}^d}
-        \big(-2\nabla_{x} \log f(t, \mathbf{x} | \mathbf{x}_{0}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) + \| \mathbf{s}_{\theta}(t, \mathbf{x}) \|^2\big) f(t, \mathbf{x} | \mathbf{x}_{0})  d \mathbf{x} d t\Big).
+        \big(-2\nabla_{x} \log f(t, \mathbf{x} \vert  \mathbf{x}_{0}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) + \| \mathbf{s}_{\theta}(t, \mathbf{x}) \|^2\big) f(t, \mathbf{x} \vert  \mathbf{x}_{0})  d \mathbf{x} d t\Big).
 $$
-Then we use the equalities $f\nabla \log f = \nabla f$ and $\mathbb{E}_{\mathbf{w}_{0} \sim (f_0, g_0)}(f(t, \mathbf{x} | \mathbf{x}_{0})) = f(t, \mathbf{x})$ to obtain
+Then we use the equalities $f\nabla \log f = \nabla f$ and $\mathbb{E}_{\mathbf{w}_{0} \sim (f_0, g_0)}(f(t, \mathbf{x} \vert  \mathbf{x}_{0})) = f(t, \mathbf{x})$ to obtain
 $$
         \min_{\theta} \int \big(-2\nabla \log f(t, \mathbf{x}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) +\|\mathbf{s}_{\theta}(t, \mathbf{x})\|^2 \big) f(t, \mathbf{x}) d \mathbf{x}.
 $$
@@ -158,7 +157,7 @@ The previous proposition is central regarding the training of diffusion models b
 **Proposition 2:** If $p$ satisfies the Fokker-Planck equation (5)<!--ref--> then
 
 $$
-p(x,t | x_0) = \dfrac{1}{(2  \pi \sigma_t^2)^{d/2} }\exp\big[(x-\mu_{t, x_0})^2/(2 \sigma_t^2)\big], \tag{11}
+p(x,t \vert  x_0) = \dfrac{1}{(2  \pi \sigma_t^2)^{d/2} }\exp\big[(x-\mu_{t, x_0})^2/(2 \sigma_t^2)\big], \tag{11}
 $$
 
 where $\mu_{t, x_0} = x_{0} e^{-t}$, $\sigma_t = \sqrt{1-e^{-2t}}$.
@@ -173,7 +172,7 @@ It is possible to derive the solution (11)<!--ref--> from scratch using Fourier 
 We can then directly apply $\nabla \log$ to (11)<!--ref--> and obtain:
 
 $$
-\nabla \log p (x, t | x_0) = - \frac{x - \mu_{t, x_0}}{\sigma_t^2}. \tag{12} 
+\nabla \log p (x, t \vert  x_0) = - \frac{x - \mu_{t, x_0}}{\sigma_t^2}. \tag{12} 
 $$
 
 By combining Proposition 1 and equation (11)<!--ref-->-(12)<!--ref--> it is therefore possible to successfully learn the score function $s_{\theta}$.
@@ -181,10 +180,10 @@ By combining Proposition 1 and equation (11)<!--ref-->-(12)<!--ref--> it is ther
 In practice the loss is written as 
 
 $$
-\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t} \Big(\int \frac{\lambda(t)}{\sigma_{t}^2} \|\frac{\mu_{t, x_{0}} - x}{\sigma_{t}} - \sigma_{t} s_{\theta}(x,t) \|^{2}  p(x,t | x_{0})dx \Big), \tag{13}
+\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}, \ t} \Big(\int \frac{\lambda(t)}{\sigma_{t}^2} \|\frac{\mu_{t, x_{0}} - x}{\sigma_{t}} - \sigma_{t} s_{\theta}(x,t) \|^{2}  p(x,t \vert  x_{0})dx \Big), \tag{13}
 $$
 
-where $p(\cdot | x_{0})$ is the probability distribution (11)<!--ref-->, $\lambda(t)$ is a time dependent function and often for diffusion models one takes 
+where $p(\cdot \vert  x_{0})$ is the probability distribution (11)<!--ref-->, $\lambda(t)$ is a time dependent function and often for diffusion models one takes 
 $$\lambda(t) = \sigma_{t}^2, \tag{14}$$
 
 which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot|x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
