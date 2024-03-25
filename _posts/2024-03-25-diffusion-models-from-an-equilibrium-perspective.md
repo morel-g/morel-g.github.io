@@ -345,9 +345,11 @@ If the gradient flow approach is also able to reverse the Fokker-Planck equation
 ### Extension to discrete datasets
 
 The approaches we have presented so far are designed to be used for continuous data. A natural question is how to generalize diffusion models to discrete datasets. If we look at diffusion models from the perspective of reversing a continuous process which converges toward an equilibrium, a natural extension would be then to consider discrete probability distributions which converge toward a discrete equilibrium. Such extensions have been studied for example in [[22](#ref22), [23](#ref23)]. Basically the discrete probability distribution satisfies the following equation
+
 $$
 \partial_{t} p = M_{t} p,
 $$
+
 where $p \in \mathbb{R}^d$ is a discrete probability distribution and $M_{t} \in \mathbb{R}^{d \times d}$ is a time dependent markov transition matrix. For example if $M$ is doubly stochastic with positive entries, then it can be shown that the corresponding probability distribution $p$ converges toward a uniform distribution. For instance in [[22](#ref22)] one possible choice is given by
 
 $$
