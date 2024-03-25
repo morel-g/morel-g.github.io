@@ -316,7 +316,7 @@ $$
 \partial_{t} p = \nabla \cdot (p \nabla \frac{\delta \mathcal{F}}{\delta p}),  \tag{17}
 $$
 
-here the notation $\frac{\delta \mathcal{F}}{\delta p}$ is used to represent the first variation of $\mathcal{F}$. The equality (17)<!--ref--> is a general form of equation which may admit an equilibrium for some specific choice of $\mathcal{F}$. In practice the equilibrium will be the probability distribution which nullify $\frac{\delta \mathcal{F}}{\delta p}$ (up to a normalization constant). For example convergence toward equilibrium are proven [[14](#ref14)] for $\frac{\delta \mathcal{F}}{\delta p}$ under the general form 
+here the notation $\frac{\delta \mathcal{F}}{\delta p}$ is used to represent the first variation of $\mathcal{F}$. The equality (17)<!--ref--> is a general form of equation which may admit an equilibrium for some specific choice of $\mathcal{F}$. In practice the equilibrium will be the probability distribution which makes $\frac{\delta \mathcal{F}}{\delta p}$ constant. For example convergence toward equilibrium are proven [[14](#ref14)] for $\frac{\delta \mathcal{F}}{\delta p}$ under the general form 
 
 $$
 \frac{\delta \mathcal{F}}{\delta p}(p) = U'(p) + V + W * p,
@@ -327,14 +327,12 @@ where $U$, $V$ and $W$ should satisfy some technical assumptions see [[14](#ref1
 As an example let 
 
 $$
-\frac{\delta \mathcal{F}}{\delta p} = \log p + \|x\|^{2}/2, \tag{19}
+\frac{\delta \mathcal{F}}{\delta p} = \log p + \|x\|^{2}/2, \tag{18}
 $$
 
  then by injecting the above equality in (17)<!--ref--> we recover the Fokker-Planck equation
+
 $$\partial_t p(x,t) = \nabla \cdot (x p(x,t))+ \Delta p (x,t).$$
-
-And we can indeed check that, up to a normalization constant, a Gaussian probability distribution nullify $\frac{\delta \mathcal{F}}{\delta p}$ in (18)<!--ref-->. 
-
 
 However the Fokker-Planck equation is a very particular example of the equation (17)<!--ref--> as it is linear. For other choices of $\mathcal{F}$ the equation (17)<!--ref--> will become non-linear making it much more difficult to solve in practice. Many research papers tackle this problem by using the so-called gradient flow approach [[15](#ref15), [16](#ref16), [17](#ref17), [18](#ref18), [19](#ref19), [20](#ref20)]. That is considering the minimization problem
 
