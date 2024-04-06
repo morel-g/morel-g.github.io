@@ -10,11 +10,9 @@ lang: en
 Score based [[1](#ref1),[2](#ref2)] and diffusion models [[3](#ref3),[4](#ref)] are a class of generative models that have recently gained popularity in the field of artificial intelligence for their ability to generate high-quality, detailed images, audio, and other types of data.  Score-based and diffusion models, despite adopting distinct perspectives, essentially represent two facets of the same underlying methodology. These models operate by transforming a random distribution of noise into a structured pattern or image through a process that gradually remove the noise of an image. 
 
 <div style="display: flex; flex-direction: row;">
-    <img src="/assets/images/diffusion/cat_3.0.png" style="width: 20%;" />
-    <img src="/assets/images/diffusion/cat_1.0.png" style="width: 20%;" />
-    <img src="/assets/images/diffusion/cat_0.2.png" style="width: 20%;" />
-    <img src="/assets/images/diffusion/cat_0.1.png" style="width: 20%;" />
-    <img src="/assets/images/diffusion/cat_0.png" style="width: 20%;" /> 
+    <img src="/assets/images/diffusion/face_0.gif" style="width: 33%;" />
+    <img src="/assets/images/diffusion/face_1.gif" style="width: 33%;" />
+    <img src="/assets/images/diffusion/face_2.gif" style="width: 33%;" />
 </div>
 
 There are already some great online posts about diffusion models. You can look for example at Lilian Weng post [[5](#ref5)] for a detail mathematical view from the 'diffusion' perspective. Another great blog post is by Yang Song [[6](#ref6)], one of the authors behind the score-based approach. These posts however do not focus on the complete physical derivation and perspective behind these models which will be the goal of this presentation. 
@@ -23,8 +21,9 @@ Indeed, even if the intuition behind diffusion models came initially from Thermo
 
 ## General idea behind the generative process of continuous data
 
+In machine learning, data is frequently represented as an unknown high dimensional probability distribution. The core of generative modeling is its ability to synthesize new samples from this complex distribution. A crucial challenge is to design methods that effectively scales to extremely high dimensions $d$. For instance in the case of an image dataset, $d$ is typically the number of pixels on an image.
 
-In machine learning, data is frequently represented through an unknown probability distribution. The essence of generative modeling lies in its capability to produce new samples from this distribution.  A common approach is to learn a transformation $F$ which changes the initial distribution $p_{0}$ into a simple known distribution often chosen to be Gaussian. Once the model has been adequately trained the learned neural network is utilized to map samples from the Gaussian distribution back to the original data distribution.
+  A common approach is to learn a transformation $F$ which changes the initial distribution $p_{0}$ into a simple known distribution often chosen to be Gaussian. Once the model has been adequately trained the learned neural network is utilized to map the high dimensional samples from the Gaussian distribution back to the original data distribution.
 
 
 ![Continuous generation process](/assets/images/diffusion/gen_basic.png)
@@ -260,7 +259,7 @@ We are now ready to give the training and sampling algorithms for diffusion mode
 
 **Figure 6:** *Training and sampling algorithms for diffusion models.*
 
-And that's it we can now train and sample from diffusion models. Below are some examples of the sampling procedure for some 2d distributions both in the deterministic and stochastic cases.
+And that's it we can now train and sample from diffusion models. Below are some examples of the sampling procedure for some 2d toy distributions both in the deterministic and stochastic cases.
 
 <div style="display: flex; flex-direction: row;">
     <img src="/assets/images/diffusion/moons_euler.gif" style="width: 50%;" />
@@ -272,6 +271,17 @@ And that's it we can now train and sample from diffusion models. Below are some 
 </div>
 
 **Figure 7:** *Sampling the density. Top: deterministic sampling ($\lambda =0$), bottom: stochastic sampling ($\lambda=1/2$).*
+
+A more realistic example is provided in Figure 8 where the dataset is made of facial images. The animations represent the sampling process where each image is interpreted as a high-dimensional point sampled from a Gaussian distribution and mapped back to the original distribution of images through the application of a diffusion model.
+
+
+<div style="display: flex; flex-direction: row;">
+    <img src="/assets/images/diffusion/face_0.gif" style="width: 33%;" />
+    <img src="/assets/images/diffusion/face_1.gif" style="width: 33%;" />
+    <img src="/assets/images/diffusion/face_2.gif" style="width: 33%;" />
+</div>
+
+**Figure 8:** *Images generation using a diffusion model trained on facial images.*
 
 ## Extension to other types of equilibria
 
