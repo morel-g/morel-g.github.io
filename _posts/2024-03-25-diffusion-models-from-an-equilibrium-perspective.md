@@ -379,6 +379,7 @@ When an explicit path is given, the flow matching approach can therefore be used
 $$
 x_{t}(x_{0}, x_{1}) =  e^{-t}x_{0} + \sqrt{1-e^{-2t}} z, \qquad z \sim p_{1}:=\mathcal{N}(0, I).
 $$
+
 Using the above interpolation for flow matching it is possible to recover the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used. It also enables the consideration of other physical systems for generative purpose. As an example consider the BGK model [[25](#ref25)] which is one of the simplest physical model to describe an exponential convergence of a probability distribution $p$ toward an equilibrium $p_{eq}$
 
 $$
@@ -390,6 +391,7 @@ One can check that $e^{-t}p + (1-e^{-t})p_{eq}$ is a solution to (20)<!--ref--> 
 $$
 x_{t}(x_{0}, x_{1}) =  e^{-t}x_{0} + (1-e^{-t}) z, \qquad z \sim p_{eq}:=\mathcal{N}(0, I),
 $$
+
 can therefore be used to learn a flow between the densities $p$ and $p_{eq}$ following the BGK density.
 
 Even if the flow matching approach is more general than diffusion models not all equilibrium methods can be recast into this framework. For the gradient flows method describe in the previous section for example, it is not possible, in general, to give an explicit interpolating path between the two densities.
