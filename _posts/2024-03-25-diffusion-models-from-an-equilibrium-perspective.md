@@ -15,7 +15,7 @@ Score based [[1](#ref1),[2](#ref2)] and diffusion models [[3](#ref3),[4](#ref)] 
     <img src="/assets/images/diffusion/face_2.gif" style="width: 33%;" />
 </div>
 
-There are already some great online posts about diffusion models. You can look for example at Lilian Weng post [[5](#ref5)] for a detail mathematical view from the 'diffusion' perspective. Another great blog post is by Yang Song [[6](#ref6)], one of the authors behind the score-based approach. These posts however do not focus on the complete physical derivation and perspective behind these models which will be the goal of this presentation. 
+There are already some great online posts about diffusion models such as Lilian Weng post [[5](#ref5)] which offers a detail mathematical view from the 'diffusion' perspective or Yang Song post [[6](#ref6)] highlighting the score-based approach. These posts however do not focus on the complete physical derivation and perspective behind these models which will be the goal of this presentation. 
 
 Indeed, even if the intuition behind diffusion models came initially from Thermodynamics equilibrium [[3](#ref3)], this foundational aspect has since been quietly set aside. Here we propose to derive and explain score-based / diffusion models (we will call them diffusion models for short) from an equilibrium perspective.
 
@@ -294,9 +294,9 @@ In physics, the Fokker-Planck equation, as introduced in equation (3)<!--ref-->,
 
 $$\partial_t p + \mathbf{v} \nabla_{\mathbf{x}} p - \mathbf{x} \nabla_{\mathbf{v}} p = \nabla_{\mathbf{v}} \cdot (\mathbf{v}p + \nabla_{\mathbf{v}} p), \tag{16}$$
 
-where $x, v \in \mathbb{R}^d$ are the space and velocity variables respectively. Using this equation for generative modeling is the approach followed in [[13](#ref13)] (they also introduce some additional parameters which does not change the general behavior of the probability density function compare to (16)<!--ref-->). The derivation of the generative method in the non-homogeneous case is close to the presentation given above for diffusion models. One of the principal change is the construction of new particular solutions to the equation see [[13](#ref13)] for details. 
+where $x, v \in \mathbb{R}^d$ are the space and velocity variables respectively. Using this equation for generative modeling is the approach followed in [[13](#ref13)] (they also introduce some additional parameters which does not change the general behavior of the probability density function compare to (16)<!--ref-->). The derivation of the generative method in the non-homogeneous case is close to the presentation given above for diffusion models see [[13](#ref13)] for details. 
 
-For practical applications, one of the main distinction with diffusion models is that the data are now represented in the space variables while the network is learning $\nabla_{v} \log p$. The gradient is therefore taken with respect to the velocity and not the space (i.e. data) variables. It can help as in practice the distribution function may be smoother with respect to the $v$ than $x$ (and in fact the spatial gradient can be ill-defined for $t=0$).
+For practical applications, one of the main distinction with classical diffusion models is that the data are now represented in the space variables while the network is learning $\nabla_{v} \log p$. The gradient is therefore taken with respect to the velocity and not the space (i.e. data) variables. It can help as in practice the distribution function may be smoother with respect to the $v$ than $x$ (and in fact the spatial gradient may be ill-defined for $t=0$).
 
 Back to our equilibrium perspective, let's now look at some research papers which study the convergence of the non-homogeneous Fokker-Planck equation (16)<!--ref-->. In fact this equation also converges toward a Gaussian equilibrium both in space and velocity
 
@@ -326,7 +326,7 @@ $$
 \partial_{t} p = \nabla \cdot (p \nabla \frac{\delta \mathcal{F}}{\delta p}),  \tag{17}
 $$
 
-here the notation $\frac{\delta \mathcal{F}}{\delta p}$ is used to represent the first variation of $\mathcal{F}$. The equality (17)<!--ref--> is a general form of equation which may admit an equilibrium for some specific choice of $\mathcal{F}$. In practice the equilibrium will be the probability distribution which makes $\frac{\delta \mathcal{F}}{\delta p}$ constant. For example convergence toward equilibrium are proven [[14](#ref14)] for $\frac{\delta \mathcal{F}}{\delta p}$ under the general form 
+here the notation $\frac{\delta \mathcal{F}}{\delta p}$ is used to represent the first variation of $\mathcal{F}$. The equality (17)<!--ref--> is a general form of equation which may admit an equilibrium for some specific choice of $\mathcal{F}$. In practice the equilibrium will be the probability distribution which makes $\frac{\delta \mathcal{F}}{\delta p}$ constant. For instance, convergence toward equilibrium is proven [[14](#ref14)] for $\frac{\delta \mathcal{F}}{\delta p}$ under the general form 
 
 $$
 \frac{\delta \mathcal{F}}{\delta p}(p) = U'(p) + V + W * p,
@@ -354,15 +354,55 @@ and follow the steepest descent direction of the function $\mathcal{F}(p)$ with 
 
 If the gradient flow approach is also able to reverse the Fokker-Planck equation with the particular choice (18)<!--ref-->, one might wonder why diffusion models seems more popular at the moment. One of the reason might be that, even if the gradient flow approach is much more general (it can handle non-linear equations), it does not exploit the linearity of the Fokker-Planck equation contrary to diffusion models. Numerically, this could lead to enhanced efficiency for diffusion models.
 
+### Flow matching / stochastic interpolants
+
+Flow matching / stochastic interpolants [[22](#ref22), [23](#ref23), [24](#ref24)] are generative methods which used explicit path between any pair of probability densities $p_{0}$ and $p_{1}$. The main idea is to define an interpolation $x_{t}$ between the particles of the two densities, as an example one might think at the simple linear case
+
+$$
+x_{t}( x_{0}, x_{1}) = (1-t)x_{0} + t x_{1}, \qquad x_{0} \sim p_{0}, \ x_{1} \sim p_{1}, \ t \in [0,1]. \tag{19}
+$$
+
+The idea is then to learn a neural network $v_{\theta}$ by minimizing the objective function
+
+$$
+\min_{\theta} \mathbb{E}_{t, \ x_{0} \sim p_{0}, \ x_{1} \sim p_{1}}\Big(|v_{\theta}(x_{t}(x_{0}, x_{1}), t)- \partial_{t} x_{t}(x_{0},x_{1}) |^{2}  \Big),
+$$
+
+which can then be used as a flow between the two densities following the ODE
+
+$$
+\frac{d}{dt}X_{t} = v_{\theta}(X_{t}, t).
+$$
+
+When an explicit path is given, the flow matching approach can therefore be used to learn a flow between the two densities. In particular, this is the case for diffusion models where the interpolating path can be written as
+
+$$
+x_{t}(x_{0}, x_{1}) =  e^{-t}x_{0} + \sqrt{1-e^{-2t}} z, \qquad z \sim p_{1}:=\mathcal{N}(0, I).
+$$
+Using the above interpolation for flow matching it is possible to recover the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used. It also enables the consideration of other physical systems for generative purpose. As an example consider the BGK model [[25](#ref25)] which is one of the simplest physical model to describe an exponential convergence of a probability distribution $p$ toward an equilibrium $p_{eq}$
+
+$$
+\partial_{t} p(x,t) = p_{eq}(x) - p(x,t).\tag{20}
+$$
+
+One can check that $e^{-t}p + (1-e^{-t})p_{eq}$ is a solution to (20)<!--ref--> and the interpolation
+
+$$
+x_{t}(x_{0}, x_{1}) =  e^{-t}x_{0} + (1-e^{-t}) z, \qquad z \sim p_{eq}:=\mathcal{N}(0, I),
+$$
+can therefore be used to learn a flow between the densities $p$ and $p_{eq}$ following the BGK density.
+
+Even if the flow matching approach is more general than diffusion models not all equilibrium methods can be recast into this framework. For the gradient flows method describe in the previous section for example, it is not possible, in general, to give an explicit interpolating path between the two densities.
+
 ### Extension to discrete datasets
 
-The approaches we have presented so far are designed to be used for continuous data. A natural question is how to generalize diffusion models to discrete datasets. If we look at diffusion models from the perspective of reversing a continuous process which converges toward an equilibrium, a natural extension would be then to consider discrete probability distributions which converge toward a discrete equilibrium. Such extensions have been studied for example in [[22](#ref22), [23](#ref23)]. Basically the discrete probability distribution satisfies the following equation
+The approaches we have presented so far are designed to be used for continuous data. A natural question is how to generalize diffusion models to discrete datasets. If we look at diffusion models from the perspective of reversing a continuous process which converges toward an equilibrium, a natural extension would be then to consider discrete probability distributions which converge toward a discrete equilibrium. Such extensions have been studied for example in [[26](#ref26), [27](#ref27)]. Basically the discrete probability distribution satisfies the following equation
 
 $$
 \partial_{t} p = M_{t} p,
 $$
 
-where $p \in \mathbb{R}^d$ is a discrete probability distribution and $M_{t} \in \mathbb{R}^{d \times d}$ is a time dependent markov transition matrix. For example if $M$ is doubly stochastic with positive entries, then it can be shown that the corresponding probability distribution $p$ converges toward a uniform distribution. For instance in [[22](#ref22)] one possible choice is given by
+where $p \in \mathbb{R}^d$ is a discrete probability distribution and $M_{t} \in \mathbb{R}^{d \times d}$ is a time dependent markov transition matrix. For example if $M$ is doubly stochastic with positive entries, then it can be shown that the corresponding probability distribution $p$ converges toward a uniform distribution. For instance in [[26](#ref26)] one possible choice is given by
 
 $$
 M_{t}^{ij} =
@@ -372,7 +412,7 @@ M_{t}^{ij} =
 \end{cases}
 $$
 
-where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the convergence of $p$ toward a uniform distribution. It then remains to learn how to reverse the process we refer to [[22](#ref22), [23](#ref23)] for details.
+where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the convergence of $p$ toward a uniform distribution. It then remains to learn how to reverse the process we refer to [[26](#ref26), [27](#ref27)] for details.
 
 <div style="display: flex; flex-direction: row;">
     <img src="/assets/images/diffusion/discrete_forward.gif" style="width: 50%;" />
@@ -400,7 +440,7 @@ Or
 >  url = "https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html"
 > }
 
-The code utilized for generating some examples showcased in this post, along with numerous supplementary materials, is available [here](https://github.com/morel-g/generative-models). 
+The code utilized for generating some examples showcased in this post, along with supplementary materials, is available [here](https://github.com/morel-g/generative-models). 
 
 ****
 
@@ -450,6 +490,14 @@ The code utilized for generating some examples showcased in this post, along wit
 
 <a id="ref21"></a> 21. Ambrosio, Luigi, Gigli, Nicola, and Savaré, Giuseppe. *Gradient Flows in Metric Spaces and in the Space of Probability Measures*. 2nd ed., Birkhäuser, 2008. Lectures in Mathematics ETH Zürich. ISBN: 978-3-7643-8722-8 978-3-7643-8721-1.
 
-<a id="ref22"></a> 22. Austin, Jacob, Johnson, Daniel D., Ho, Jonathan, Tarlow, Daniel, and van den Berg, Rianne. "Structured Denoising Diffusion Models in Discrete State-Spaces." *CoRR* abs/2107.03006 (2021). [URL](https://arxiv.org/abs/2107.03006).
+<a id="ref22"></a> 22. Lipman, Yaron, Chen, Ricky T. Q., Ben-Hamu, Heli, Nickel, Maximilian, and Le, Matt. "Flow Matching for Generative Modeling." arXiv (2023). [URL](https://arxiv.org/abs/2210.02747).
 
-<a id="ref23"></a> 23. Santos, Javier E., Fox, Zachary R., Lubbers, Nicholas, and Lin, Yen Ting. "Blackout Diffusion: Generative Diffusion Models in Discrete-State Spaces." *arXiv* (2023). [arXiv:2305.11089](https://arxiv.org/abs/2305.11089).
+<a id="ref23"></a> 23. Albergo, Michael S., Boffi, Nicholas M., and Vanden-Eijnden, Eric. "Stochastic Interpolants: A Unifying Framework for Flows and Diffusions." arXiv (2023). [URL](https://arxiv.org/abs/2303.08797)
+
+<a id="ref24"></a> 24. Liu, Xingchao, Gong, Chengyue, and Liu, Qiang. "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow." arXiv (2022). [URL](https://arxiv.org/abs/2209.03003).
+
+<a id="ref25"></a> 25. Bhatnagar, P. L., Gross, E. P., and Krook, M. "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged and Neutral One-Component Systems." Phys. Rev. 94, no. 3 (May 1954): 511–525. doi:10.1103/PhysRev.94.511. [URL](https://link.aps.org/doi/10.1103/PhysRev.94.511)
+
+<a id="ref26"></a> 26. Austin, Jacob, Johnson, Daniel D., Ho, Jonathan, Tarlow, Daniel, and van den Berg, Rianne. "Structured Denoising Diffusion Models in Discrete State-Spaces." *CoRR* abs/2107.03006 (2021). [URL](https://arxiv.org/abs/2107.03006).
+
+<a id="ref27"></a> 27. Santos, Javier E., Fox, Zachary R., Lubbers, Nicholas, and Lin, Yen Ting. "Blackout Diffusion: Generative Diffusion Models in Discrete-State Spaces." *arXiv* (2023). [arXiv:2305.11089](https://arxiv.org/abs/2305.11089).
