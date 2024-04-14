@@ -368,7 +368,7 @@ $$
 \min_{\theta} \mathbb{E}_{t, \ x_{0} \sim p_{0}, \ x_{1} \sim p_{1}}\Big(|v_{\theta}(x_{t}(x_{0}, x_{1}), t)- \partial_{t} x_{t}(x_{0},x_{1}) |^{2}  \Big),
 $$
 
-which can then be used as a flow between the two densities following the ODE
+which can then be used as a flow to transport particles between the two densities by following the ODE
 
 $$
 \frac{d}{dt}X_{t} = v_{\theta}(X_{t}, t).
