@@ -396,8 +396,6 @@ can therefore be used to learn a flow between the densities $p$ and $p_{eq}$ fol
 
 Even if the flow matching approach is more general than diffusion models not all equilibrium methods can be recast into this framework see Figure 9. For the gradient flows method describe in the previous section for example, it is not possible, in general, to give an explicit interpolating path between the two densities.
 
-
-
 <div style="text-align: center;">
 <img src="/assets/images/diffusion/diagram.png" alt="diagram" width="80%" />
 </div>
@@ -426,8 +424,8 @@ $$
 where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the convergence of $p$ toward a uniform distribution. It then remains to learn how to reverse the process we refer to [[26](#ref26), [27](#ref27)] for details.
 
 <div style="display: flex; flex-direction: row;">
-    <img src="../assets/images/diffusion/discrete_forward.gif" style="width: 50%;" />
-    <img src="../assets/images/diffusion/discrete_euler.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/discrete_forward.gif" style="width: 50%;" />
+    <img src="/assets/images/diffusion/discrete_euler.gif" style="width: 50%;" />
 </div>
 
 **Figure 10:** *Discrete diffusion model applied on a discrete toy dataset. Left: convergence of the initial distribution toward the uniform equilibrium. Right: Sampling procedure.*
