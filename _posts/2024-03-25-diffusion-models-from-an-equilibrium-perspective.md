@@ -380,7 +380,7 @@ $$
 x_{t}(x_{0}, x_{1}) =  e^{-t}x_{0} + \sqrt{1-e^{-2t}} z, \qquad z \sim p_{1}:=\mathcal{N}(0, I).
 $$
 
-Using the above interpolation for flow matching it is possible to recover the density of the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used connecting arbitrary densities (with the possibility that none of them is Gaussian) see Figure 9. 
+Using the above interpolation for flow matching it is possible to recover the density of the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used to connect arbitrary densities (with the possibility that none of them is Gaussian) see Figure 9 for example. 
 
 <div style="text-align: center;">
 <img src="/assets/images/diffusion/stochastic_interpolant.gif" alt="density interpolation" width="50%" />
