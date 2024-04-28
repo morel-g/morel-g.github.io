@@ -383,7 +383,7 @@ $$
 Using the above interpolation for flow matching it is possible to recover the density of the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used connecting arbitrary densities (with the possibility that none of them is Gaussian) see Figure 9. 
 
 <div style="text-align: center;">
-<img src="../assets/images/diffusion/stochastic_interpolant.gif" alt="diagram" width="50%" />
+<img src="/assets/images/diffusion/stochastic_interpolant.gif" alt="density interpolation" width="50%" />
 </div>
 
 **Figure 9:** *Interpolation between two densities using the flow matching / stochastic interpolant framework.*
