@@ -44,7 +44,7 @@ In physics, the Fokker-Planck equation provides insight into the movements of ti
 
 The Fokker-Planck equation under its more general form can be written
 
-$$\partial_t p(x,t) = \nabla \cdot (g(x) p(x,t))+ h(x) \Delta p (x,t),  \tag{1}$$
+$$\partial_t p(x,t) = \nabla \cdot (g(x, t) p(x,t))+ h(x, t) \Delta p (x,t),  \tag{1}$$
 
  where $x \in \mathbb{R}^d$, $g$ is the drift term and $h$ a function modeling the diffusion coefficient. For machine learning applications we usually operate in very high dimension hence computing the full distribution $p$ at once is not tractable. One of the crucial property of equation (1)<!--ref--> is the possibility to adopt a particles based view 
 
@@ -54,7 +54,7 @@ $$
 
 This formulation allows for the simulation of independent particles, as described in (1)<!--ref-->, without the need to consider the entire density at once. This approach offers a significant advantage, particularly for machine learning applications, due to its effectiveness in high-dimensional spaces. 
 
-From now on, we will focus on a specific form of the Fokker-Planck equation, which we'll simply refer to as the Fokker-Planck equation. That is equation (1)<!--ref--> with $g(x)=x$ and $h(x)=1$
+From now on, we will focus on a specific form of the Fokker-Planck equation, which we'll simply refer to as the Fokker-Planck equation. That is equation (1)<!--ref--> with $g(x, t)=x$ and $h(x, t)=1$
 
 $$\partial_t p(x,t) = \nabla \cdot (x p(x,t))+ \Delta p (x,t). \tag{3}$$
 
@@ -101,7 +101,7 @@ where $\lambda\geq 0$ is a positive constant. Assuming that $\nabla \log p$ is k
 
 $$s_\theta(x,t) \approx \nabla \log p(x,t).$$
 
-The neural network $s_{\theta}$ is commonly referred to as the score function. For image data it is frequently chosen to be a U-net [[10](#ref10)] but we won't delve here into the specifics of this architecture. Once $s_{\theta}$ is trained we can use equation (2)<!--ref--> with $g(x) = -x-(1+\lambda)s_{\theta}$ and $h(x)= \lambda$ to samples the particles from $p_{eq}$ (i.e. denoise the data)
+The neural network $s_{\theta}$ is commonly referred to as the score function. For image data it is frequently chosen to be a U-net [[10](#ref10)] but we won't go into the specifics details of this architecture. Once $s_{\theta}$ is trained we can use equation (2)<!--ref--> with $g(x,t) = -x-(1+\lambda)s_{\theta}(x,t)$ and $h(x)= \lambda$ to samples the particles from $p_{eq}$ (i.e. denoise the data)
 
 $$
 dx = (x + (1+\lambda) s_{\theta}(x,t))dt + \sqrt{2 \lambda dt} z, \quad z \sim \mathcal{N}(0, I).  \tag{8} 
@@ -120,16 +120,16 @@ Note that when $\lambda =0$ the equation (8)<!--ref--> is a simple ordinary diff
 
 So, in essence, diffusion models focus on learning the score function $s_\theta(x,t) \approx \nabla \log p(x,t)$ of a Fokker-Planck equation. However for practical machine learning applications computing directly $\nabla \log p$ is intractable. The trick [[9](#ref9)] is to use the conditional log probability $\nabla \log p( \cdot \vert x_0)$ where $x_0$ are data points of the initial probability distribution $p_0$. 
 
-**Proposition 1:** The minimum of
+**Proposition 1:** The argmin of
 
 $$
-\min_\theta \int \|\nabla \log p (x, t) - s_{\theta}(x,t)\|^{2} p(x,t) dxdt, \tag{9}
+\argmin_\theta \int \|\nabla \log p (x, t) - s_{\theta}(x,t)\|^{2} p(x,t) dxdt, \tag{9}
 $$
 
-is the same as 
+is the same as the argmin of
 
 $$
-\min_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t \vert  x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t \vert  x_{0})dx dt\Big) \tag{10}
+\argmin_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t \vert  x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t \vert  x_{0})dx dt\Big) \tag{10}
 $$
 
 <details>
@@ -138,24 +138,24 @@ $$
 Expanding the square norm in (9)<!--ref--> and dropping the term which does not depend on $\theta$ one gets
 
 $$
-        \min_{\theta} \int \big(-2\nabla \log f(t, \mathbf{x}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) +\|\mathbf{s}_{\theta}(t, \mathbf{x})\|^2 \big) f(t, \mathbf{x}) d \mathbf{x}.
+         \int \big(-2\nabla \log p(t, x) \cdot s_{\theta}(t, x) +\|s_{\theta}(t, x)\|^2 \big) p(t, x) d x.
 $$
 
 In the same way expanding the term (10)<!--ref--> in the same way and dropping the term which does not depend on $\theta$ one gets
 
 $$
-        \min_{\theta} \mathbb{E}_{\mathbf{x}_{0} \sim f_0}
+         \mathbb{E}_{x_{0} \sim p_0}
         \Big(\int_{0}^T \int_{\mathbb{R}^d}
-        \big(-2\nabla_{x} \log f(t, \mathbf{x} \vert  \mathbf{x}_{0}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) + \| \mathbf{s}_{\theta}(t, \mathbf{x}) \|^2\big) f(t, \mathbf{x} \vert  \mathbf{x}_{0})  d \mathbf{x} d t\Big).
+        \big(-2\nabla_{x} \log p(t, x \vert  x_{0}) \cdot s_{\theta}(t, x) + \| s_{\theta}(t, x) \|^2\big) p(t, x \vert  x_{0})  d x d t\Big).
 $$
 
-Then we use the equalities $f\nabla \log f = \nabla f$ and $\mathbb{E}_{\mathbf{w}_{0} \sim (f_0, g_0)}(f(t, \mathbf{x} \vert  \mathbf{x}_{0})) = f(t, \mathbf{x})$ to obtain
+Then we use the equalities $p\nabla \log p = \nabla p$ and $\mathbb{E}_{x_{0} \sim p_{0}}\big(p(t, x \vert  x_{0})\big) = p(t, x)$ to obtain
 
 $$
-        \min_{\theta} \int \big(-2\nabla \log f(t, \mathbf{x}) \cdot \mathbf{s}_{\theta}(t, \mathbf{x}) +\|\mathbf{s}_{\theta}(t, \mathbf{x})\|^2 \big) f(t, \mathbf{x}) d \mathbf{x}.
+         \int \big(-2\nabla \log p(t, x) \cdot s_{\theta}(t, x) +\|s_{\theta}(t, x)\|^2 \big) p(t, x) d x.
 $$
 
-We recover the expression which was obtained with the original formulation and conclude that the two minimums coincide. &#x25A0;
+We recover the expression which was obtained with the original formulation and conclude that the two argmin coincide. &#x25A0;
 
 </details>
 
@@ -187,12 +187,12 @@ By combining Proposition 1 and equation (11)<!--ref-->-(12)<!--ref--> it is ther
 In practice the loss is written as 
 
 $$
-\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}} \Big(\int \frac{\lambda(t)}{\sigma_{t}^2} \|\frac{\mu_{t, x_{0}} - x}{\sigma_{t}} - \sigma_{t} s_{\theta}(x,t) \|^{2}  p(x,t \vert  x_{0})dt dx \Big), \tag{13}
+\mathcal{L} := \min_{\theta} \mathbb{E}_{x_{0} \sim p_{0}} \Big(\int \frac{\alpha(t)}{\sigma_{t}^2} \|\frac{\mu_{t, x_{0}} - x}{\sigma_{t}} - \sigma_{t} s_{\theta}(x,t) \|^{2}  p(x,t \vert  x_{0})dt dx \Big), \tag{13}
 $$
 
-where $p(\cdot \vert  x_{0})$ is the probability distribution (11)<!--ref-->, $\lambda(t)$ is a time dependent function and often for diffusion models one takes 
+where $p(\cdot \vert  x_{0})$ is the probability distribution (11)<!--ref-->, $\alpha(t)$ is a time dependent function and often for diffusion models one takes 
 
-$$\lambda(t) = \sigma_{t}^2, \tag{14}$$
+$$\alpha(t) = \sigma_{t}^2, \tag{14}$$
 
 which is a natural choice given it allows to remove the singularity in the loss (13)<!--ref-->. By using the form of $p(\cdot \vert x_{0})$ given in (11)<!--ref--> and doing the change of variable $z=(x-\mu_{t, x_{0}})/\sigma_{t}$ in (13)<!--ref--> one finally gets
 
@@ -241,7 +241,7 @@ $$
 
 It might not be clear at first why this change of variable is needed and many presentations remain elusive about it. Here are some of the reasons which might justify the introduction of the new time dependence:
 
-**- Balance for the temporal weight $\lambda(t) = \sigma_{t}^{2}$ in the loss function:** In (13)<!--ref--> the loss function $\mathcal{L}$ is modified by selecting $\lambda(t) = \sigma_{t}^2$ as the weighting function, altering its time dependence. Given that $\sigma(0) = 0$ and $\sigma_{t} \rightarrow 1$ when $t \rightarrow +\infty$, this results in a diminished emphasis on earlier times compared to the baseline choice of $\lambda = 1$. The variable transformation introduced in (15)<!--ref--> might compensates by reallocating some of the weight back to the initial times see Figure 5.
+**- Balance for the temporal weight $\alpha(t) = \sigma_{t}^{2}$ in the loss function:** In (13)<!--ref--> the loss function $\mathcal{L}$ is modified by selecting $\alpha(t) = \sigma_{t}^2$ as the weighting function, altering its time dependence. Given that $\sigma(0) = 0$ and $\sigma_{t} \rightarrow 1$ when $t \rightarrow +\infty$, this results in a diminished emphasis on earlier times compared to the baseline choice of $\alpha = 1$. The variable transformation introduced in (15)<!--ref--> might compensates by reallocating some of the weight back to the initial times see Figure 5.
 
 **- Dealing with the exponential convergence toward equilibrium:** As shown in equation (4)<!--ref--> the function $p(\cdot,t)$ converges exponentially fast toward the equilibrium 
 
@@ -292,7 +292,7 @@ We have seen that the fundamental property behind diffusion models is the conver
 
 In physics, the Fokker-Planck equation, as introduced in equation (3)<!--ref-->, is interpreted over the velocity space for a system characterized by a density distribution homogeneous in space. For the sake of simplicity, our earlier discussions employed the notation $x$ to refer to the unknown velocity variable. As we transition to examining the non-homogeneous case we will now use the notation $x$ for space and $v$ for velocities. The non-homogeneous Fokker-Planck equation for a density function $p(x,v,t)$ can be written under the form
 
-$$\partial_t p + \mathbf{v} \nabla_{\mathbf{x}} p - \mathbf{x} \nabla_{\mathbf{v}} p = \nabla_{\mathbf{v}} \cdot (\mathbf{v}p + \nabla_{\mathbf{v}} p), \tag{16}$$
+$$\partial_t p + v \nabla_{\mathbf{x}} p - x \nabla_{v} p = \nabla_{v} \cdot (vp + \nabla_{v} p), \tag{16}$$
 
 where $x, v \in \mathbb{R}^d$ are the space and velocity variables respectively. Using this equation for generative modeling is the approach followed in [[13](#ref13)] (they also introduce some additional parameters which does not change the general behavior of the probability density function compare to (16)<!--ref-->). The derivation of the generative method in the non-homogeneous case is close to the presentation given above for diffusion models see [[13](#ref13)] for details. 
 
@@ -380,7 +380,16 @@ $$
 x_{t}(x_{0}, x_{1}) =  e^{-t}x_{0} + \sqrt{1-e^{-2t}} z, \qquad z \sim p_{1}:=\mathcal{N}(0, I).
 $$
 
-Using the above interpolation for flow matching it is possible to recover the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used. It also enables the consideration of other physical systems for generative purpose. As an example consider the BGK model [[25](#ref25)] which is one of the simplest physical model to describe an exponential convergence of a probability distribution $p$ toward an equilibrium $p_{eq}$
+Using the above interpolation for flow matching it is possible to recover the density of the diffusion approach. The flow matching framework however is more general in the sense that other interpolations such as the one presented in (19)<!--ref--> can be used connecting arbitrary densities (with the possibility that none of them is Gaussian) see Figure 9. 
+
+<div style="text-align: center;">
+<img src="../assets/images/diffusion/stochastic_interpolant.gif" alt="diagram" width="50%" />
+</div>
+
+**Figure 9:** *Interpolation between two densities using the flow matching / stochastic interpolant framework.*
+
+
+It also enables the consideration of other physical systems for generative purpose. As an example consider the BGK model [[25](#ref25)] which is one of the simplest physical model to describe an exponential convergence of a probability distribution $p$ toward an equilibrium $p_{eq}$
 
 $$
 \partial_{t} p(x,t) = p_{eq}(x) - p(x,t).\tag{20}
@@ -394,13 +403,13 @@ $$
 
 can therefore be used to learn a flow between the densities $p$ and $p_{eq}$ following the BGK density. Finally note that the non-homogenous case considered before can also be written under this formalism.
 
-Even if the flow matching approach is more general than diffusion models not all equilibrium methods can be recast into this framework see Figure 9. For the gradient flows method describe in the previous section for example, it is not possible, in general, to give an explicit interpolating path between the two densities.
+Even if the flow matching approach is more general than diffusion models not all equilibrium methods can be recast into this framework see Figure 10. For the gradient flows method described in the previous section for example, it is not possible, in general, to give an explicit interpolating path between the two densities.
 
 <div style="text-align: center;">
 <img src="/assets/images/diffusion/diagram.png" alt="diagram" width="80%" />
 </div>
 
-**Figure 9:** *Diagram of flow matching and equilibrium methods for generative modeling purpose.*
+**Figure 10:** *Diagram of flow matching and equilibrium methods for generative modeling purpose.*
 
 
 ### Extension to discrete datasets
@@ -428,7 +437,7 @@ where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the 
     <img src="/assets/images/diffusion/discrete_euler.gif" style="width: 50%;" />
 </div>
 
-**Figure 10:** *Discrete diffusion model applied on a discrete toy dataset. Left: convergence of the initial distribution toward the uniform equilibrium. Right: Sampling procedure.*
+**Figure 11:** *Discrete diffusion model applied on a discrete toy dataset. Left: convergence of the initial distribution toward the uniform equilibrium. Right: Sampling procedure.*
 
 ## Citation & Code
 
