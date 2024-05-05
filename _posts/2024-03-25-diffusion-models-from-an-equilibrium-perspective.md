@@ -46,10 +46,10 @@ The Fokker-Planck equation under its more general form can be written
 
 $$\partial_t p(x,t) = \nabla \cdot (g(x, t) p(x,t))+ h(x, t) \Delta p (x,t),  \tag{1}$$
 
- where $x \in \mathbb{R}^d$, $g$ is the drift term and $h$ a function modeling the diffusion coefficient. For machine learning applications we usually operate in very high dimension hence computing the full distribution $p$ at once is not tractable. One of the crucial property of equation (1)<!--ref--> is the possibility to adopt a particles based view 
+ where $x \in \mathbb{R}^d$, $t \in \mathbb{R}$, $g(\cdot) \in \mathbb{R}^{d}$ is the drift term and $h(\cdot) \in \mathbb{R}$ is a function modeling the diffusion coefficient. For machine learning applications we usually operate in very high dimension hence computing the full distribution $p$ at once is not tractable. One of the crucial property of equation (1)<!--ref--> is the possibility to adopt a particles based view 
 
 $$
-dx = -g(x) dt + \sqrt{2 h(x) dt} z, \quad z \sim \mathcal{N}(0, I).  \tag{2}
+dx = -g(x) dt + \sqrt{2 h(x) dt} z, \quad z \sim \mathcal{N}(0, I) \in \mathbb{R}^d.  \tag{2}
 $$
 
 This formulation allows for the simulation of independent particles, as described in (1)<!--ref-->, without the need to consider the entire density at once. This approach offers a significant advantage, particularly for machine learning applications, due to its effectiveness in high-dimensional spaces. 
@@ -123,13 +123,13 @@ So, in essence, diffusion models focus on learning the score function $s_\theta(
 **Proposition 1:** The argmin of
 
 $$
-\argmin_\theta \int \|\nabla \log p (x, t) - s_{\theta}(x,t)\|^{2} p(x,t) dxdt, \tag{9}
+\text{argmin}_\theta \int \|\nabla \log p (x, t) - s_{\theta}(x,t)\|^{2} p(x,t) dxdt, \tag{9}
 $$
 
 is the same as the argmin of
 
 $$
-\argmin_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t \vert  x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t \vert  x_{0})dx dt\Big) \tag{10}
+\text{argmin}_{\theta} E_{x_{0}\sim p_{0}}\Big(\int \|\nabla \log p (x,t \vert  x_{0}) - s_{\theta}(x,t)\|^{2}p (x,t \vert  x_{0})dx dt\Big) \tag{10}
 $$
 
 <details>
