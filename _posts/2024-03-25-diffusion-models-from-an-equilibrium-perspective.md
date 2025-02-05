@@ -1,6 +1,6 @@
 ---
 title: Diffusion models from an equilibrium perspective
-author: Guillaume Morel
+author: G. Morel
 date: 25 march 2024
 lang: en
 ---
@@ -438,25 +438,6 @@ where $\beta_{t} \in [0,1]$ is a time dependent scalar. This choice ensures the 
 </div>
 
 **Figure 11:** *Discrete diffusion model applied on a discrete toy dataset. Left: convergence of the initial distribution toward the uniform equilibrium. Right: Sampling procedure.*
-
-## Citation & Code
-
-Cited as:
-
-
-> Morel, Guillaume. (Mar. 2024). Diffusion models from an equilibrium perspective. https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html
-
-
-Or
-
-
-> @misc{Morel24,
->  author = {Morel, Guillaume},
->  title = {Diffusion models from an equilibrium perspective},
->  year = {2024},
->  month = {Mar},
->  url = "https://morel-g.github.io/2024/03/25/diffusion-models-from-an-equilibrium-perspective.html"
-> }
 
 The code utilized for generating some examples showcased in this post, along with supplementary materials, is available [here](https://github.com/morel-g/generative-models). 
 
