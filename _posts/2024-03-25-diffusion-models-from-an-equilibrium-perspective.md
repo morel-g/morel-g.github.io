@@ -1,8 +1,10 @@
 ---
 title: Diffusion models from an equilibrium perspective
 author: G. Morel
-date: 25 march 2024
+date: 2024-03-25
+layout: post
 lang: en
+tags: Other
 ---
 
 # Diffusion models from an equilibrium perspective
