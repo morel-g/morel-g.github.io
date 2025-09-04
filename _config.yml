@@ -1,8 +1,8 @@
 title: "Homepage"
 author: "G. Morel"
-# description: "Some short description of your blog can go here." # This will show up in places like twitter, linkedin, etc, if you share your sites url as a post.
+url: "https://morel-g.github.io"
+baseurl: ""
 
-# Email / Social media user names used by the minima theme:
 # All of these are optional and can be removed or commented out
 email: "morelg.contact AT proton.me"
 github_username: "morel-g"
